@@ -48,12 +48,7 @@ class GroceryDashboard:
         if "page" not in st.session_state:
             st.session_state["page"] = "Login"
         if "messages" not in st.session_state:
-            st.session_state["messages"] = [
-                {
-                    "role": "assistant",
-                    "content": "Hi! I can help with orders, inventory, and store questions.",
-                }
-            ]
+            st.session_state["messages"] = self.assistant.default_messages()
 
     def current_user(self):
         user_data = st.session_state.get("current_user")
@@ -157,7 +152,7 @@ class GroceryDashboard:
 
     def show_sidebar(self, user):
         with st.sidebar:
-            st.title("finalproject")
+            st.title("New London Grocery Store")
             st.caption(f"{user.name or user.username} | {user.role.title()}")
 
             pages = ["Dashboard", "Assistant"]
@@ -385,7 +380,7 @@ class GroceryDashboard:
 
             with st.chat_message("assistant"):
                 with st.spinner("Thinking..."):
-                    answer = self.assistant.generate_response(prompt, user.role, user.email)
+                    answer = self.assistant.generate_response(st.session_state["messages"], user.role, user.email)
                     st.write(answer)
 
             st.session_state["messages"].append({"role": "assistant", "content": answer})
@@ -394,4 +389,5 @@ class GroceryDashboard:
             st.session_state["messages"] = [
                 {"role": "assistant", "content": "Hi! I can help with orders, inventory, and store questions."}
             ]
+            self.assistant.save_logs(st.session_state["messages"])
             st.rerun()

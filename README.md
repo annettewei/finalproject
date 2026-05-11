@@ -16,6 +16,12 @@ export OPENAI_API_KEY="your-api-key-here"
 streamlit run app.py
 ```
 
+You can also put the key in `.streamlit/secrets.toml`:
+
+```toml
+OPENAI_API_KEY = "your-api-key-here"
+```
+
 ## Test Accounts
 
 Customer:
@@ -42,7 +48,7 @@ Both accounts include visible sample data so the dashboards, order history, inve
 - `ui/grocery_dashboard.py`: Streamlit UI layer, layout, forms, routing, and display logic.
 - `models.py`: object-oriented models for users, inventory items, and orders.
 - `ai_assistant.py`: OpenAI assistant class that answers questions using current inventory and order context.
-- `json_data/`: sample JSON data for users, inventory, and orders.
+- `json_data/`: sample JSON data for users, inventory, orders, and saved AI chat logs.
 
 ## Final Project Improvements
 
@@ -53,3 +59,4 @@ Both accounts include visible sample data so the dashboards, order history, inve
 - Cleaner separation between UI, data, service, model, and AI assistant code.
 - Functions, methods, and classes used throughout the app.
 - Sample data and test accounts shown directly on the login page.
+- AI assistant prompt building, chat history, and JSON log saving based on the reference assistant structure.

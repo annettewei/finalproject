@@ -1,0 +1,14 @@
+[
+  {
+    "role": "assistant",
+    "content": "Hi! I can help with orders, inventory, and store questions."
+  },
+  {
+    "role": "user",
+    "content": "how many bananas are in stock"
+  },
+  {
+    "role": "assistant",
+    "content": "Your OpenAI key is connected, but this account has no available API quota. Check your OpenAI billing or project credits, then try again."
+  }
+]
