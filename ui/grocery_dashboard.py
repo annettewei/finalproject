@@ -14,6 +14,7 @@ class GroceryDashboard:
 
         if not st.session_state["logged_in"]:
             self.show_login_page()
+            return
 
         user = self.current_user()
         if user is None:
