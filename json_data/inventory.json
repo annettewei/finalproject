@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "name": "Bananas",
+    "price": 1.5,
+    "stock": 28,
+    "category": "Produce"
+  },
+  {
+    "id": 2,
+    "name": "Milk",
+    "price": 4.25,
+    "stock": 12,
+    "category": "Dairy"
+  },
+  {
+    "id": 3,
+    "name": "Eggs",
+    "price": 5.75,
+    "stock": 6,
+    "category": "Dairy"
+  },
+  {
+    "id": 4,
+    "name": "Bread",
+    "price": 3.5,
+    "stock": 20,
+    "category": "Bakery"
+  },
+  {
+    "id": 5,
+    "name": "Chicken Breast",
+    "price": 12.95,
+    "stock": 4,
+    "category": "Meat"
+  },
+  {
+    "id": 6,
+    "name": "Apples",
+    "price": 2.25,
+    "stock": 18,
+    "category": "Produce"
+  }
+]

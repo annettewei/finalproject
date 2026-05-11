@@ -1,0 +1,52 @@
+[
+  {
+    "id": "09021575-e188-4525-89de-c71a99c3e475",
+    "item_id": 1,
+    "item_name": "Bananas",
+    "quantity": 2,
+    "status": "placed",
+    "total": 3.0,
+    "user_email": "student@test.com",
+    "timestamp": "2026-05-01 09:15"
+  },
+  {
+    "id": "7b701e7a-4385-4564-b087-2f3555b9a5f6",
+    "item_id": 2,
+    "item_name": "Milk",
+    "quantity": 1,
+    "status": "placed",
+    "total": 4.25,
+    "user_email": "student@test.com",
+    "timestamp": "2026-05-02 13:30"
+  },
+  {
+    "id": "8a1ea305-461d-4bfc-bbab-d77da1d793e2",
+    "item_id": 4,
+    "item_name": "Bread",
+    "quantity": 2,
+    "status": "cancelled",
+    "total": 7.0,
+    "user_email": "student@test.com",
+    "timestamp": "2026-05-03 16:45"
+  },
+  {
+    "id": "fe453fa9-4c8d-4ab8-9ec1-2c87563b5e03",
+    "item_id": 6,
+    "item_name": "Apples",
+    "quantity": 3,
+    "status": "placed",
+    "total": 6.75,
+    "user_email": "family@test.com",
+    "timestamp": "2026-05-04 11:10"
+  },
+  {
+    "id": "c093cbf5-fc65-4010-a7fe-c4c64d85ca38",
+    "item_id": 1,
+    "item_name": "Bananas",
+    "quantity": 3,
+    "status": "cancelled",
+    "total": 4.5,
+    "user_email": "aannettewei@gmail.com",
+    "timestamp": "2026-05-11 01:25"
+  }
+]

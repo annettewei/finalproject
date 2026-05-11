@@ -1,0 +1,23 @@
+[
+  {
+    "username": "student@test.com",
+    "email": "student@test.com",
+    "name": "Student Customer",
+    "password": "student123",
+    "role": "user"
+  },
+  {
+    "username": "employee@test.com",
+    "email": "employee@test.com",
+    "name": "Employee Manager",
+    "password": "employee123",
+    "role": "employee"
+  },
+  {
+    "username": "aannettewei@gmail.com",
+    "email": "aannettewei@gmail.com",
+    "name": "annette",
+    "password": "123",
+    "role": "user"
+  }
+]
