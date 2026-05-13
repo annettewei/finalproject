@@ -1,13 +1,19 @@
 import streamlit as st
 
-from ai_assistant import AIChatAssistant
+from services.ai_chatbot import ChatLoggerStore, OrderAssistantBot
 from services.grocery_manager import GroceryManager
 
 
 class GroceryDashboard:
-    def __init__(self, manager: GroceryManager, assistant: AIChatAssistant) -> None:
+    def __init__(
+        self,
+        manager: GroceryManager,
+        assistant_bot: OrderAssistantBot | None,
+        chat_logger: ChatLoggerStore,
+    ) -> None:
         self.manager = manager
-        self.assistant = assistant
+        self.assistant_bot = assistant_bot
+        self.chat_logger = chat_logger
 
     def main(self):
         self.setup_session()
@@ -48,7 +54,23 @@ class GroceryDashboard:
         if "page" not in st.session_state:
             st.session_state["page"] = "Login"
         if "messages" not in st.session_state:
-            st.session_state["messages"] = self.assistant.default_messages()
+            st.session_state["messages"] = self.load_chat_messages()
+
+    def starter_message(self):
+        return {"role": "assistant", "content": "Hi! Ask me a question about the order data."}
+
+    def load_chat_messages(self):
+        messages = []
+        for log in self.chat_logger.load_logs():
+            if "user_message" in log and "assistant_message" in log:
+                messages.append({"role": "user", "content": log["user_message"]})
+                messages.append({"role": "assistant", "content": log["assistant_message"]})
+            elif "role" in log and "content" in log:
+                messages.append({"role": log["role"], "content": log["content"]})
+
+        if not messages:
+            messages.append(self.starter_message())
+        return messages
 
     def current_user(self):
         user_data = st.session_state.get("current_user")
@@ -70,13 +92,25 @@ class GroceryDashboard:
         st.session_state["logged_in"] = False
         st.session_state["current_user"] = None
         st.session_state["page"] = "Login"
-        st.session_state["messages"] = [
-            {"role": "assistant", "content": "Hi! I can help with orders, inventory, and store questions."}
-        ]
+        st.session_state["messages"] = self.load_chat_messages()
         st.rerun()
 
     def money(self, value):
         return f"${value:,.2f}"
+
+    def item_icon(self, item_name):
+        icons = {
+            "apples": "🍎",
+            "bananas": "🍌",
+            "bread": "🍞",
+            "chicken breast": "🍗",
+            "eggs": "🥚",
+            "milk": "🥛",
+        }
+        return icons.get(item_name.lower(), "🛒")
+
+    def item_label(self, item):
+        return f"{self.item_icon(item.name)} {item.name}"
 
     def orders_table(self, orders):
         table = []
@@ -101,7 +135,7 @@ class GroceryDashboard:
             table.append(
                 {
                     "ID": item.id,
-                    "Name": item.name,
+                    "Name": self.item_label(item),
                     "Category": item.category,
                     "Price": self.money(item.price),
                     "Stock": item.stock,
@@ -230,7 +264,7 @@ class GroceryDashboard:
                 selected_item = st.selectbox(
                     "Item",
                     inventory,
-                    format_func=lambda item: f"{item.name} - {self.money(item.price)} ({item.stock} available)",
+                    format_func=lambda item: f"{self.item_label(item)} - {self.money(item.price)} ({item.stock} available)",
                 )
                 quantity = st.number_input("Quantity", min_value=1, max_value=max(1, selected_item.stock), step=1)
                 submitted = st.form_submit_button("Create Order", type="primary", use_container_width=True)
@@ -312,7 +346,7 @@ class GroceryDashboard:
                 st.info("No items to edit.")
                 return
 
-            selected_item = st.selectbox("Choose item", items, format_func=lambda item: item.name)
+            selected_item = st.selectbox("Choose item", items, format_func=self.item_label)
 
             with st.form("edit_inventory_form"):
                 name = st.text_input("Item name", value=selected_item.name)
@@ -364,30 +398,34 @@ class GroceryDashboard:
                 st.info("There are no active orders.")
 
     def show_assistant(self, user):
-        st.markdown("# AI Assistant")
-        st.caption("Ask about grocery availability, orders, restocking, or how to use the app.")
+        st.markdown("# Order Data Assistant")
+        st.caption("Ask me anything about recent orders.")
 
-        for message in st.session_state["messages"]:
-            with st.chat_message(message["role"]):
-                st.write(message["content"])
+        chat_container = st.container()
+        with chat_container:
+            for message in st.session_state["messages"]:
+                with st.chat_message(message["role"]):
+                    st.markdown(message["content"])
 
-        prompt = st.chat_input("Ask the store assistant...")
-        if prompt:
-            st.session_state["messages"].append({"role": "user", "content": prompt})
+        user_input = st.chat_input("Type your question here... (e.g. How many total orders do we have?)")
+        if user_input:
+            st.session_state["messages"].append({"role": "user", "content": user_input})
 
-            with st.chat_message("user"):
-                st.write(prompt)
+            with chat_container.chat_message("user"):
+                st.markdown(user_input)
 
-            with st.chat_message("assistant"):
+            with chat_container.chat_message("assistant"):
                 with st.spinner("Thinking..."):
-                    answer = self.assistant.generate_response(st.session_state["messages"], user.role, user.email)
-                    st.write(answer)
+                    response_text = self.assistant_bot.get_ai_response(st.session_state["messages"])
+                    st.markdown(response_text)
 
-            st.session_state["messages"].append({"role": "assistant", "content": answer})
+            st.session_state["messages"].append({"role": "assistant", "content": response_text})
+
+            logs = self.chat_logger.load_logs()
+            logs.append({"user_message": user_input, "assistant_message": response_text})
+            self.chat_logger.save_logs(logs)
 
         if st.button("Clear Chat"):
-            st.session_state["messages"] = [
-                {"role": "assistant", "content": "Hi! I can help with orders, inventory, and store questions."}
-            ]
-            self.assistant.save_logs(st.session_state["messages"])
+            st.session_state["messages"] = [self.starter_message()]
+            self.chat_logger.save_logs([])
             st.rerun()

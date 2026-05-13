@@ -1,0 +1,22 @@
+[
+  {
+    "user_message": "how many total orders do we have",
+    "assistant_message": "Your OpenAI key is connected, but this account has no available API quota. Check your OpenAI billing or project credits, then try again."
+  },
+  {
+    "user_message": "how many total orders do we have",
+    "assistant_message": "Your OpenAI key is connected, but this account has no available API quota. Check your OpenAI billing or project credits, then try again."
+  },
+  {
+    "user_message": "how many total orders do we have",
+    "assistant_message": "Fallback mode: There are 5 total orders in the order data."
+  },
+  {
+    "user_message": "how many total orders do we have",
+    "assistant_message": "Fallback mode: There are 5 total orders in the order data."
+  },
+  {
+    "user_message": "how many total orders do we have",
+    "assistant_message": "There are 5 total orders in the order data."
+  }
+]

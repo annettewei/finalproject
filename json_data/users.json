@@ -19,5 +19,12 @@
     "name": "annette",
     "password": "123",
     "role": "user"
+  },
+  {
+    "username": "annettew@udel.edu",
+    "email": "annettew@udel.edu",
+    "name": "Annette",
+    "password": "123",
+    "role": "user"
   }
 ]

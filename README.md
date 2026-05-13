@@ -9,18 +9,13 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-To enable the AI assistant, set an OpenAI API key before starting Streamlit:
+To enable the AI assistant, create a `.env` file in the project folder:
 
-```bash
-export OPENAI_API_KEY="your-api-key-here"
-streamlit run app.py
+```env
+OPENAI_API_KEY="your-api-key-here"
 ```
 
-You can also put the key in `.streamlit/secrets.toml`:
-
-```toml
-OPENAI_API_KEY = "your-api-key-here"
-```
+Then restart Streamlit. The `.env` file is ignored by Git so the API key stays private.
 
 ## Test Accounts
 
@@ -45,10 +40,11 @@ Both accounts include visible sample data so the dashboards, order history, inve
 - `app.py`: small Streamlit starter file that creates the app objects.
 - `data/grocery_store.py`: data layer for loading and saving JSON records.
 - `services/grocery_manager.py`: service layer for authentication, registration, orders, inventory updates, and summaries.
+- `services/ai_chatbot.py`: OOD chatbot classes for order data, chat logging, hidden prompts, and OpenAI responses.
 - `ui/grocery_dashboard.py`: Streamlit UI layer, layout, forms, routing, and display logic.
 - `models.py`: object-oriented models for users, inventory items, and orders.
-- `ai_assistant.py`: OpenAI assistant class that answers questions using current inventory and order context.
-- `json_data/`: sample JSON data for users, inventory, orders, and saved AI chat logs.
+- `ai_assistant.py`: small compatibility import file for the chatbot classes.
+- `json_data/`: sample JSON data for users, inventory, orders, and saved chat logs.
 
 ## Final Project Improvements
 
@@ -59,4 +55,4 @@ Both accounts include visible sample data so the dashboards, order history, inve
 - Cleaner separation between UI, data, service, model, and AI assistant code.
 - Functions, methods, and classes used throughout the app.
 - Sample data and test accounts shown directly on the login page.
-- AI assistant prompt building, chat history, and JSON log saving based on the reference assistant structure.
+- AI assistant OOD structure with separate order data, chat logging, and bot service classes.
